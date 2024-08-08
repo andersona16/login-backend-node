@@ -175,8 +175,11 @@ mongoose
 
 
 module.exports = (req, res) => {
-    const { method } = req;
-    const handler = app[method.toLowerCase()] || ((req, res) => res.status(405).end());
-
-    return handler(req, res);
+    return new Promise((resolve, reject) => {
+        const { method } = req;
+        app[method.toLowerCase()](req, res, (err) => {
+            if (err) return reject(err);
+            resolve();
+        });
+    });
 };
