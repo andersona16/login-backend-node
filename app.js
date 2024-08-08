@@ -172,3 +172,11 @@ mongoose
         console.log("Conectou ao banco!");
     })
     .catch((err) => console.log(err));
+
+
+module.exports = (req, res) => {
+    const { method } = req;
+    const handler = app[method.toLowerCase()] || ((req, res) => res.status(405).end());
+
+    return handler(req, res);
+};
